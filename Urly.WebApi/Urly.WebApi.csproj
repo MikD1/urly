@@ -7,11 +7,14 @@
   <ItemGroup>
         <PackageReference Include="AutoMapper" Version="9.0.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers" />
+    <ProjectReference Include="..\Urly.Application\Urly.Application.csproj" />
+    <ProjectReference Include="..\Urly.Domain\Urly.Domain.csproj" />
+    <ProjectReference Include="..\Urly.Dto\Urly.Dto.csproj" />
   </ItemGroup>
 
 </Project>

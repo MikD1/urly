@@ -1,8 +1,11 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Urly.Application;
 
 namespace Urly.WebApi
 {
@@ -17,11 +20,14 @@ namespace Urly.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(DtoMappingProfile));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerDocumentation();
             services.AddControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -31,6 +37,10 @@ namespace Urly.WebApi
             app.UseSwaggerDocumentation();
             app.UseRouting();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            // WARN! Not working with migrations.
+            dbContext.Database.EnsureDeleted();
+            dbContext.Database.EnsureCreated();
         }
     }
 }
