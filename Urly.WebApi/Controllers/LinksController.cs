@@ -35,7 +35,7 @@ namespace Urly.WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<LinkDto>> PostLink(CreateLinkDto createLinkDto)
+        public async Task<ActionResult<LinkDto>> PostLink([FromBody] CreateLinkDto createLinkDto)
         {
             var link = new Link(createLinkDto.FullUrl);
             await _linksRepository.AddLinkAsync(link);

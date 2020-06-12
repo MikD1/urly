@@ -20,6 +20,7 @@ namespace Urly.Application
         public async Task AddLinkAsync(Link link)
         {
             await _dbContext.Links.AddAsync(link);
+            await _dbContext.SaveChangesAsync();
         }
 
         private readonly AppDbContext _dbContext;

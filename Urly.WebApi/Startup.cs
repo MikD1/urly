@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Urly.Application;
+using Urly.Domain;
 
 namespace Urly.WebApi
 {
@@ -23,6 +24,7 @@ namespace Urly.WebApi
             services.AddAutoMapper(typeof(DtoMappingProfile));
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<ILinksRepository, LinksRepository>();
             services.AddSwaggerDocumentation();
             services.AddControllers();
         }
@@ -39,8 +41,8 @@ namespace Urly.WebApi
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             // WARN! Not working with migrations.
-            dbContext.Database.EnsureDeleted();
-            dbContext.Database.EnsureCreated();
+            // dbContext.Database.EnsureDeleted();
+            // dbContext.Database.EnsureCreated();
         }
     }
 }
