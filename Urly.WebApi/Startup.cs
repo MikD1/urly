@@ -36,6 +36,7 @@ namespace Urly.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseExceptionMiddleware();
             app.UseSwaggerDocumentation();
             app.UseRouting();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

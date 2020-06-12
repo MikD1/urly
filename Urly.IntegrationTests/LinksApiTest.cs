@@ -66,5 +66,15 @@ namespace Urly.IntegrationTests
             Assert.AreEqual("link/qwe?a=1&b=2", linkDto.FullUrl);
             Assert.AreEqual("e", linkDto.ShortCode);
         }
+
+        [TestMethod]
+        public async Task GetNotFoundIfLinkNotExist()
+        {
+            var factory = new UrlyWebApplicationFactory<Startup>();
+            HttpClient client = factory.CreateClient();
+
+            HttpResponseMessage response = await client.GetAsync($"/api/v1/links/fake");
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
     }
 }

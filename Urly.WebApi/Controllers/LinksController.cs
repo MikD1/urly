@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Urly.Domain;
+using Urly.Domain.Exceptions;
 using Urly.Dto;
 
 namespace Urly.WebApi.Controllers
@@ -37,6 +38,11 @@ namespace Urly.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<LinkDto>> PostLink([FromBody] CreateLinkDto createLinkDto)
         {
+            if (createLinkDto is null)
+            {
+                throw new InvalidOperationDomainException("Invalid argument.");
+            }
+
             var link = new Link(createLinkDto.FullUrl);
             await _linksRepository.AddLinkAsync(link);
 

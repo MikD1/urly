@@ -1,4 +1,5 @@
 ﻿using System;
+using Urly.Domain.Exceptions;
 
 namespace Urly.Domain
 {
@@ -6,6 +7,16 @@ namespace Urly.Domain
     {
         public Link(string fullUrl)
         {
+            if (string.IsNullOrEmpty(fullUrl))
+            {
+                throw new InvalidOperationDomainException("Invalid Full URL.");
+            }
+
+            if (fullUrl.Length > 500)
+            {
+                throw new InvalidOperationDomainException("Full URL too long.");
+            }
+
             FullUrl = fullUrl;
             Created = DateTime.UtcNow;
         }
