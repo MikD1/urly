@@ -43,7 +43,7 @@ namespace Urly.WebApi
 
             // WARN! Not working with migrations.
             // dbContext.Database.EnsureDeleted();
-            // dbContext.Database.EnsureCreated();
+            dbContext.Database.EnsureCreated();
         }
     }
 }
