@@ -15,7 +15,8 @@ namespace Urly.Application
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Link>()
-                .ToTable("links");
+                .ToTable("links")
+                .Ignore(x => x.ShortCode);
         }
     }
 }

@@ -26,5 +26,26 @@ namespace Urly.Domain
         public string FullUrl { get; private set; }
 
         public DateTime Created { get; private set; }
+
+        public string ShortCode
+        {
+            get
+            {
+                if (_shortCode is null)
+                {
+                    CalculateShortCode();
+                }
+
+                return _shortCode;
+            }
+        }
+
+        private void CalculateShortCode()
+        {
+            var encoder = new ShortCodeEncoder();
+            _shortCode = encoder.Encode(Id);
+        }
+
+        private string _shortCode;
     }
 }

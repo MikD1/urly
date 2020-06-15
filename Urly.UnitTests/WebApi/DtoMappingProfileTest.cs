@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Urly.Domain;
 using Urly.Dto;
@@ -31,7 +30,7 @@ namespace Urly.UnitTests.WebApi
             var linkDto = _mapper.Map<LinkDto>(link);
 
             Assert.AreEqual("https://urly.dev/abc/123", linkDto.FullUrl);
-            Assert.IsNull(linkDto.ShortCode);
+            Assert.AreEqual(string.Empty, linkDto.ShortCode);
         }
 
         private MapperConfiguration _configuration;

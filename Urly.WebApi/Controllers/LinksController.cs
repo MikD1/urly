@@ -1,21 +1,22 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Urly.Application.AddLink;
+using Urly.Application.GetLink;
 using Urly.Domain;
-using Urly.Domain.Exceptions;
 using Urly.Dto;
 
 namespace Urly.WebApi.Controllers
 {
-    // TODO: Use Mediator
     [Route("api/v1/links")]
     public class LinksController : ControllerBase
     {
-        public LinksController(IMapper mapper, ILinksRepository linksRepository)
+        public LinksController(IMapper mapper, IMediator mediator, ILinksRepository linksRepository)
         {
             _mapper = mapper;
-            _linksRepository = linksRepository;
+            _mediator = mediator;
         }
 
         [HttpGet("{code}")]
@@ -24,10 +25,8 @@ namespace Urly.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<LinkDto>> GetLink(string code)
         {
-            var encoder = new ShortCodeEncoder();
-            int id = encoder.Decode(code);
-            Link link = await _linksRepository.GetLinkByIdAsync(id);
-
+            var request = new GetLinkRequest(code);
+            Link link = await _mediator.Send(request);
             var linkDto = _mapper.Map<LinkDto>(link);
             linkDto.ShortCode = code;
             return Ok(linkDto);
@@ -38,21 +37,14 @@ namespace Urly.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<LinkDto>> PostLink([FromBody] CreateLinkDto createLinkDto)
         {
-            if (createLinkDto is null)
-            {
-                throw new InvalidOperationDomainException("Invalid argument.");
-            }
-
-            var link = new Link(createLinkDto.FullUrl);
-            await _linksRepository.AddLinkAsync(link);
+            var request = new AddLinkRequest(createLinkDto?.FullUrl);
+            Link link = await _mediator.Send(request);
 
             var linkDto = _mapper.Map<LinkDto>(link);
-            var encoder = new ShortCodeEncoder();
-            linkDto.ShortCode = encoder.Encode(link.Id);
             return CreatedAtAction(nameof(GetLink), new { code = linkDto.ShortCode }, linkDto);
         }
 
         private readonly IMapper _mapper;
-        private readonly ILinksRepository _linksRepository;
+        private readonly IMediator _mediator;
     }
 }

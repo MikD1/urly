@@ -8,8 +8,7 @@ namespace Urly.WebApi
     {
         public DtoMappingProfile()
         {
-            CreateMap<Link, LinkDto>()
-                .ForMember(x => x.ShortCode, op => op.Ignore());
+            CreateMap<Link, LinkDto>();
         }
     }
 }

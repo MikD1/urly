@@ -1,4 +1,6 @@
+using System.Reflection;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,7 @@ namespace Urly.WebApi
             services.AddScoped<ILinksRepository, LinksRepository>();
             services.AddSwaggerDocumentation();
             services.AddControllers();
+            services.AddMediatR(Assembly.GetAssembly(typeof(AppDbContext)));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext dbContext)
