@@ -10,7 +10,7 @@ namespace Urly.Application
         {
         }
 
-        public DbSet<Link> Links { get; set; }
+        public DbSet<Link> Links { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

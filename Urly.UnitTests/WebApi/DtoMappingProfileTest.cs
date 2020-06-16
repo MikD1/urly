@@ -33,7 +33,7 @@ namespace Urly.UnitTests.WebApi
             Assert.AreEqual(string.Empty, linkDto.ShortCode);
         }
 
-        private MapperConfiguration _configuration;
-        private IMapper _mapper;
+        private MapperConfiguration _configuration = null!;
+        private IMapper _mapper = null!;
     }
 }

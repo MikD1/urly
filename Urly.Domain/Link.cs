@@ -31,21 +31,9 @@ namespace Urly.Domain
         {
             get
             {
-                if (_shortCode is null)
-                {
-                    CalculateShortCode();
-                }
-
-                return _shortCode;
+                var encoder = new ShortCodeEncoder();
+                return encoder.Encode(Id);
             }
         }
-
-        private void CalculateShortCode()
-        {
-            var encoder = new ShortCodeEncoder();
-            _shortCode = encoder.Encode(Id);
-        }
-
-        private string _shortCode;
     }
 }

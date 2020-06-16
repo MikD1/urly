@@ -5,9 +5,9 @@ namespace Urly.Dto
     public class LinkDto
     {
         [Required]
-        public string FullUrl { get; set; }
+        public string? FullUrl { get; set; }
 
         [Required]
-        public string ShortCode { get; set; }
+        public string? ShortCode { get; set; }
     }
 }

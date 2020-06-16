@@ -27,9 +27,9 @@ namespace Urly.WebApi
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ILinksRepository, LinksRepository>();
+            services.AddMediatR(Assembly.GetAssembly(typeof(AppDbContext)));
             services.AddSwaggerDocumentation();
             services.AddControllers();
-            services.AddMediatR(Assembly.GetAssembly(typeof(AppDbContext)));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext dbContext)
@@ -41,6 +41,7 @@ namespace Urly.WebApi
 
             app.UseExceptionMiddleware();
             app.UseSwaggerDocumentation();
+            /*app.UseRedirectMiddleware();*/
             app.UseRouting();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

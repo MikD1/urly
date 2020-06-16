@@ -12,14 +12,9 @@ namespace Urly.Application
             _dbContext = dbContext;
         }
 
-        public async Task<Link> GetLinkByIdAsync(int id)
+        public async Task<Link?> GetLinkByIdAsync(int id)
         {
             Link link = await _dbContext.Links.FirstOrDefaultAsync(x => x.Id == id);
-            if (link is null)
-            {
-                throw new NotFoundDomainException($"Link not found.");
-            }
-
             return link;
         }
 

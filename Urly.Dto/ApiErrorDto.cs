@@ -1,7 +1,10 @@
-﻿namespace Urly.Dto
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Urly.Dto
 {
     public class ApiErrorDto
     {
-        public string Message { get; set; }
+        [Required]
+        public string? Message { get; set; }
     }
 }

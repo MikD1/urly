@@ -22,7 +22,12 @@ namespace Urly.Application.GetLink
 
             var encoder = new ShortCodeEncoder();
             int id = encoder.Decode(request.ShortCode);
-            Link link = await _linksRepository.GetLinkByIdAsync(id);
+            Link? link = await _linksRepository.GetLinkByIdAsync(id);
+            if (link is null)
+            {
+                throw new NotFoundDomainException($"Link '{request.ShortCode}' not found.");
+            }
+
             return link;
         }
 

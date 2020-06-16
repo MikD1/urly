@@ -5,6 +5,10 @@
         <WarningsAsErrors />
       </PropertyGroup>
 
+      <PropertyGroup>
+        <Nullable>enable</Nullable>
+      </PropertyGroup>
+
       <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers"/>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json">

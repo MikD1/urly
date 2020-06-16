@@ -36,12 +36,7 @@ namespace Urly.IntegrationTests
             var factory = new UrlyWebApplicationFactory<Startup>();
             HttpClient client = factory.CreateClient();
 
-            var createLinkDto = new CreateLinkDto { FullUrl = "link/qwe?a=1&b=2" };
-            string json = JsonHelper.Serialize(createLinkDto);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync($"/api/v1/links", data);
-            response.EnsureSuccessStatusCode();
-
+            HttpResponseMessage response = await PostLink(client, "link/qwe?a=1&b=2");
             var linkDto = await JsonHelper.Deserialize<LinkDto>(response.Content);
 
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
@@ -55,15 +50,12 @@ namespace Urly.IntegrationTests
             var factory = new UrlyWebApplicationFactory<Startup>();
             HttpClient client = factory.CreateClient();
 
-            var createLinkDto = new CreateLinkDto { FullUrl = "link/qwe?a=1&b=2" };
-            string json = JsonHelper.Serialize(createLinkDto);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            await client.PostAsync($"/api/v1/links", data);
-
+            await PostLink(client, "link/qwe?a=1&b=21");
             HttpResponseMessage response = await client.GetAsync($"/api/v1/links/e");
+            response.EnsureSuccessStatusCode();
             var linkDto = await JsonHelper.Deserialize<LinkDto>(response.Content);
 
-            Assert.AreEqual("link/qwe?a=1&b=2", linkDto.FullUrl);
+            Assert.AreEqual("link/qwe?a=1&b=21", linkDto.FullUrl);
             Assert.AreEqual("e", linkDto.ShortCode);
         }
 
@@ -75,6 +67,14 @@ namespace Urly.IntegrationTests
 
             HttpResponseMessage response = await client.GetAsync($"/api/v1/links/fake");
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        private async Task<HttpResponseMessage> PostLink(HttpClient client, string fullUrl)
+        {
+            var createLinkDto = new CreateLinkDto { FullUrl = fullUrl };
+            string json = JsonHelper.Serialize(createLinkDto);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            return await client.PostAsync($"/api/v1/links", data);
         }
     }
 }
